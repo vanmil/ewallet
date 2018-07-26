@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ab -n 1000 -c 100 $TARGET_HOST/
+ab -n $NUM_TOTAL_REQUESTS -c $NUM_CLIENTS $TARGET_HOST/api/admin
