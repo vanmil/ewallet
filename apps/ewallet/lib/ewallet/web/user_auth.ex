@@ -1,4 +1,4 @@
-defmodule AdminAPI.V1.AdminUserAuthenticator do
+defmodule EWallet.Web.UserAuth do
   @moduledoc """
   Perform authentication with the given email and password.
   It returns the associated user if authenticated, `false` otherwise.
@@ -18,8 +18,8 @@ defmodule AdminAPI.V1.AdminUserAuthenticator do
       true ->
         conn
         |> assign(:authenticated, true)
-        |> assign(:auth_scheme, :admin)
-        |> assign(:admin_user, user)
+        |> assign(:auth_scheme, :admin) # <- !?!?!?!?!?!?!?!?!?!?!?!!
+        |> assign(:admin_user, user) # <- !?!?!?!?!?!?!?!?!?!?!?!!
 
       _ ->
         handle_fail_auth(conn, :invalid_login_credentials)
@@ -36,7 +36,7 @@ defmodule AdminAPI.V1.AdminUserAuthenticator do
   """
   def expire_token(conn) do
     token_string = conn.private[:auth_auth_token]
-    AuthToken.expire(token_string, :admin_api)
+    AuthToken.expire(token_string, :admin_api) # <- !?!?!?!?!?!?!?!?!?!?!?!!
     handle_fail_auth(conn, :auth_token_expired)
   end
 

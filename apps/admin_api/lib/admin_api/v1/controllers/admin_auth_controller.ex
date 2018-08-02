@@ -1,7 +1,7 @@
 defmodule AdminAPI.V1.AdminAuthController do
   use AdminAPI, :controller
   import AdminAPI.V1.ErrorHandler
-  alias AdminAPI.V1.AdminUserAuthenticator
+  alias EWallet.Web.UserAuth
   alias EWallet.AccountPolicy
   alias EWalletDB.{AuthToken, Account}
 
@@ -15,7 +15,7 @@ defmodule AdminAPI.V1.AdminAuthController do
       })
       when is_binary(email) and is_binary(password) do
     conn
-    |> AdminUserAuthenticator.authenticate(email, password)
+    |> UserAuth.authenticate(email, password)
     |> respond_with_token()
   end
 
@@ -60,7 +60,7 @@ defmodule AdminAPI.V1.AdminAuthController do
   def logout(conn, _attrs) do
     with {:ok, _current_user} <- permit(:update, conn.assigns) do
       conn
-      |> AdminUserAuthenticator.expire_token()
+      |> UserAuth.expire_token()
       |> render(:empty_response, %{})
     else
       error_code ->
